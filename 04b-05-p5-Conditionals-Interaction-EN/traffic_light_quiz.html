@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50vh;
+      margin: 0;
+      background-color: #f0f5f5;
+    }
+
+    .card-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .card {
+        position: absolute;
+      width: auto;
+      height: auto;
+      padding: 5px; /* Reduced padding */
+      border: 1px solid #ccc;
+      background-color: #3498db; /* Blue background color */
+      color: #fff; /* White text color */
+      border-radius: 10px; /* Rounded corners */
+      cursor: grab;
+    }
+
+    .card p {
+      margin: 0;
+    }
+  </style>
+  <script>
+    let pieces = [
+        'function draw(){&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>}', 
+        'function setup()&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<br><br><br><br><br><br><br><br><br><br><br><br><br>}', 
+        "if (mouseY > height*2/3) {<br><br><br><br><br>}",
+        "else if ((mouseY < height*2/3) && (mouseY > height*1/3)) {<br><br><br><br><br>}",
+        "else {&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<br><br><br><br><br><br>}",
+        "let redLight = 'white';<br>let yellowLight = 'white';<br>let greenLight = 'white';",
+        "fill('grey');<br>rect(width/2, height/2, 180, 420);",
+        "greenLight = 'green';",
+        "yellowLight = 'yellow';",
+        "redLight = 'red';",
+        "createCanvas(500, 500);",
+	    "rectMode(CENTER);",
+	    "background('deepSkyBlue');",
+        "fill(redLight);<br>circle(width / 2, height / 2 - 115, 100);<br>fill(yellowLight);<br>circle(width / 2, height / 2, 100);<br>fill(greenLight);<br>circle(width / 2, height / 2 + 115, 100);",
+
+
+    ];
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const cardContainer = document.querySelector('.card-container');
+      
+      // Create multiple cards
+      for (let i = 0; i < pieces.length; i++) {
+        const card = createCard(pieces[i]);
+        cardContainer.appendChild(card);
+        makeDraggable(card);
+        randomizePosition(card);
+      }
+    });
+
+    function createCard(description) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = '<p>' + description + '</p>';
+      return card;
+    }
+
+    function makeDraggable(element) {
+      let offsetX, offsetY, isDragging = false;
+
+      element.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+        element.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        element.style.cursor = 'grab';
+      });
+    }
+
+    function randomizePosition(element) {
+      const maxX = window.innerWidth - element.clientWidth;
+      const maxY = window.innerHeight - element.clientHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      element.style.left = `${randomX}px`;
+      element.style.top = `${randomY}px`;
+    }
+  </script>
+</head>
+<body>
+  <div class="card-container"></div>
+</body>
+</html>
